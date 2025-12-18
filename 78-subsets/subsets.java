@@ -1,23 +1,18 @@
 class Solution {
-    public static List<List<Integer>> subsetSol(int arr[],List<Integer> ans ,int i){
-        if(i>=arr.length){
-            List<List<Integer>> result=new ArrayList<>();
-            result.add(new ArrayList<>(ans));
-            return result;
+    public static void solution(int arr[],int i,List<Integer> list,List<List<Integer>> base){
+        if(i==arr.length){
+            base.add(new ArrayList<>(list));
+            return;
         }
-        ans.add(arr[i]);
-        List<List<Integer>> include=subsetSol(arr,ans,i+1);
-        ans.remove(ans.size()-1);
-
-        List<List<Integer>> exclude= subsetSol(arr,ans,i+1);
-        include.addAll(exclude);
-        return include;
-
+        list.add(arr[i]);
+        solution(arr,i+1,list,base);
+        list.remove(list.size()-1);
+        solution(arr,i+1,list,base);
     }
     public List<List<Integer>> subsets(int[] nums) {
-List<Integer> list = new ArrayList<>();
-        List<List<Integer>> ans = subsetSol(nums,list,0);
-        return ans;
-        
+        List<List<Integer>> base = new ArrayList<>();
+        List<Integer> list = new ArrayList<>();
+        solution(nums,0,list,base);
+        return base;
     }
 }
