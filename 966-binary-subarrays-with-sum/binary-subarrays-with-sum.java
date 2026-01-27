@@ -1,23 +1,20 @@
 class Solution {
-    public static int atMost(int arr[],int k){
-        int r=0;
-        int l=0;
-        int sum=0;
+    public int numSubarraysWithSum(int[] nums, int goal) {
+        int n=nums.length;
+        HashMap<Integer,Integer> map = new HashMap<>();
+        map.put(0,1);
+        int ps=0;
         int count=0;
-        int n=arr.length;
-        while(r<n){
-            sum+=arr[r];
-            while(l<=r && sum >k){
-                sum-=arr[l];
-                l++;
+        for(int i=0;i<n;i++){
+           ps+=nums[i];
+      
+            if(map.containsKey(ps-goal)){
+                count+=map.get(ps-goal);
             }
-            count+=(r-l+1);
-            r++;
+                   map.put(ps,map.getOrDefault(ps,0)+1);
+          
         }
         return count;
-    }
-    public int numSubarraysWithSum(int[] nums, int goal) {
         
-        return atMost(nums,goal)-atMost(nums,goal-1);
     }
 }
