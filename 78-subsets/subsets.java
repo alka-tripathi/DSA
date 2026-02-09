@@ -1,18 +1,19 @@
 class Solution {
-    public static void solution(int arr[],int i,List<Integer> list,List<List<Integer>> base){
-        if(i==arr.length){
-            base.add(new ArrayList<>(list));
-            return;
-        }
-        list.add(arr[i]);
-        solution(arr,i+1,list,base);
+    public static void subSets(int i,int arr[],List<Integer> list, List<List<Integer>> result){
+   if(i==arr.length){
+    result.add(new ArrayList<>(list));
+    return;
+   }
+         list.add(arr[i]);
+        subSets(i+1,arr,list,result);
         list.remove(list.size()-1);
-        solution(arr,i+1,list,base);
+        subSets(i+1,arr,list,result);
     }
     public List<List<Integer>> subsets(int[] nums) {
-        List<List<Integer>> base = new ArrayList<>();
-        List<Integer> list = new ArrayList<>();
-        solution(nums,0,list,base);
-        return base;
+         List<List<Integer>> result = new ArrayList<>();
+         List<Integer> list = new ArrayList<>();
+         subSets(0,nums,list,result);
+         return result;
+        
     }
 }
