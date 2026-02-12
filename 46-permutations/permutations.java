@@ -1,26 +1,27 @@
 class Solution {
-    public static void solution(int arr[],boolean used[],List<Integer> list,
-    List<List<Integer>>  base){
-       if(list.size()==arr.length){
-       base.add(new ArrayList<>(list));
-       return;
+    public static void permutation(int j,int arr[],List<Integer> list,List<List<Integer>> result,boolean used[]){
+     if(j==arr.length){
+   result.add(new ArrayList<>(list));
+   return;
        }
+
         for(int i=0;i<arr.length;i++){
             if(used[i]) continue;
             used[i]=true;
             list.add(arr[i]);
-            solution(arr,used,list,base);
+            permutation(j+1,arr,list,result,used);
             used[i]=false;
             list.remove(list.size()-1);
-
         }
     }
     public List<List<Integer>> permute(int[] nums) {
-        List<List<Integer>>  base = new ArrayList<>();
+
+        List<List<Integer>> result=new ArrayList<>();
         List<Integer> list = new ArrayList<>();
         boolean used[]=new boolean[nums.length];
-        solution(nums,used,list,base);
-        return base;
+        permutation(0,nums,list,result,used);
+        return result;
+
         
     }
 }
