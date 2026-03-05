@@ -1,0 +1,18 @@
+class Solution {
+    public int kthSmallest(int[][] matrix, int k) {
+        PriorityQueue<Integer> pq = new PriorityQueue<>((a,b)->Integer.compare(b,a)); //max heap
+        int n=matrix.length;
+        int m=matrix[0].length;
+
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                pq.offer(matrix[i][j]);
+                if(pq.size()>k){
+                    pq.poll();
+                }
+            }
+        }
+        return pq.peek();
+        
+    }
+}
