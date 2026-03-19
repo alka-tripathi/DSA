@@ -1,28 +1,34 @@
 class Solution {
     public long maximumSubarraySum(int[] nums, int k) {
-        HashMap<Integer,Integer> map = new HashMap<>();
-        long sum=0;
-        long maxsum=0;
-        int r=0;
-        int l=0;
         int n=nums.length;
-        while(r<n){
-            map.put(nums[r],map.getOrDefault(nums[r],0)+1);
-          sum+=nums[r];
-            while(r-l+1>k){
-                  map.put(nums[l],map.getOrDefault(nums[l],0)-1);
-                sum-=nums[l];
-                if(map.get(nums[l])==0){
+    HashMap<Integer,Integer> map = new HashMap<>();
+    int l=0;
+    long max=0;
+    int r=0;
+    long sum=0;
+    while(r<n){
+        sum+=nums[r];
+        map.put(nums[r],map.getOrDefault(nums[r],0)+1);
+
+                if (r - l + 1 > k) {
+                sum -= nums[l];
+                map.put(nums[l], map.get(nums[l]) - 1);
+                if (map.get(nums[l]) == 0) {
                     map.remove(nums[l]);
                 }
-                 l++;
+                l++;
             }
-            if(r-l+1==k && map.size()==k){
-                maxsum=Math.max(maxsum,sum);
-            }
-            r++;
+
+
+        if(r-l+1==k && map.size()==k){
+            max=Math.max(max,sum);
+            
+
         }
-        return maxsum;
+      
+        r++;
+    }
+    return max;
         
     }
 }
