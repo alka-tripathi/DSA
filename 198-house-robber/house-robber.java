@@ -1,27 +1,21 @@
 class Solution {
-    public static int solution(int arr[],int i){
-        if(i==0) return arr[0];
-        if(i<0) return 0;
-        int take=arr[i]+solution(arr,i-2);
-        int nottake=0+solution(arr,i-1);
-        return Math.max(take,nottake);
+    public static int solution(int i,int arr[],int dp[]){
+          if(i==arr.length-1) return arr[arr.length-1];
+       if(i>=arr.length) return 0;
+       if(dp[i] != -1) return dp[i];
+     
+       int take=arr[i]+solution(i+2,arr,dp);
+       int not_take=solution(i+1,arr,dp);
+       
+        return dp[i]= Math.max(take,not_take);
+
     }
     public int rob(int[] nums) {
         int n=nums.length;
-        if(n==1)return nums[0];
-        int curr=0;
-        int prev=nums[0];
-        int prev2=0;
+        int dp[]= new int[n];
+        Arrays.fill(dp,-1);
 
-   for(int i=1;i<n;i++){
-    int take=nums[i]+prev2;
-    int nottake=0+prev;
-    curr=Math.max(take,nottake);
-        prev2=prev;
-  prev=curr;
-
-
-   }
-      return curr;  
+        return solution(0,nums,dp);
+        
     }
 }
