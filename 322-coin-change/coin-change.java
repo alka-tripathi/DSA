@@ -1,48 +1,29 @@
 class Solution {
-    public static int solution(int i,int arr[],int target){
-       if(i==0){
-        if(target%arr[0]==0) return target/arr[0];
-        return Integer.MAX_VALUE;
-       }
+    public static int solution(int i,int arr[],int target,int dp[][]){
+      if(target==0)return 0;
+      if(i>=arr.length)return Integer.MAX_VALUE;
 
-        int nt=solution(i-1,arr,target);
+      if(dp[i][target]!=-1)return dp[i][target];
+
+        int nt=solution(i+1,arr,target,dp);
         int take=Integer.MAX_VALUE;
-        if(arr[i]<=target){
-            int ans=solution(i,arr,target-arr[i]);
-           if(ans!=Integer.MAX_VALUE){
-            take=1+ans;
-           }
+        if(target>=arr[i]){
+            int ans=solution(i,arr,target-arr[i],dp);
+          if(ans!=Integer.MAX_VALUE){
+            take=ans+1;
+          }
         }
-        return Math.min(take,nt);
+        return dp[i][target]=Math.min(take,nt);
     }
-    public int coinChange(int[] coins, int target) {
-   int n=coins.length;
-        //return solution(n-1,coins,amount)==Integer.MAX_VALUE?-1:solution(n-1,coins,amount);
-
-        int dp[][]= new int[n+1][target+1];
-        for(int i=0;i<=target;i++){
-            dp[0][i]=Integer.MAX_VALUE;
-        }
-        for(int i=1;i<=n;i++){
-            dp[i][0]=0;
-        }
-
-        for(int i=1;i<=n;i++){
-            for(int j=1;j<=target;j++){
-                int nt=dp[i-1][j];
-                int take=Integer.MAX_VALUE;
-
-                if(coins[i-1]<=j){
-                    int ans=dp[i][j-coins[i-1]];
-                    if(ans !=Integer.MAX_VALUE){
-                        take=1+ans;
-                    }
-                  
-                }
-                dp[i][j]=Math.min(nt,take);
+    public int coinChange(int[] coins, int amount) {
+        int n=coins.length;
+        int dp[][]= new int[n][amount+1];
+        for(int i=0;i<n;i++){
+            for(int j=0;j<=amount;j++){
+            dp[i][j]=-1;
             }
         }
-        return dp[n][target]==Integer.MAX_VALUE?-1:dp[n][target];
+        return solution(0,coins,amount,dp)==Integer.MAX_VALUE?-1:solution(0,coins,amount,dp);
         
     }
 }
