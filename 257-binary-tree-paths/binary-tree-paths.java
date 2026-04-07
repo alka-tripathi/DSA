@@ -14,21 +14,33 @@
  * }
  */
 class Solution {
-    public static void solution(TreeNode root,List<String> ans,String path){
-        if(root==null) return;
-        path+=root.val+"->";
+    public static void solution(TreeNode root,List<String> ans,String str){
+      
+       
+            if(root==null)return;
+               str+=root.val;
         if(root.left==null && root.right==null){
-            ans.add(path.substring(0,path.length()-2));
-            path="";
+            ans.add(str);
             return;
+
         }
-        solution(root.left,ans,path);
-        solution(root.right,ans,path);
+        
+
+     str+="->";
+    
+        solution(root.left,ans,str);
+      
+      
+        solution(root.right,ans,str);
+      
+     return;
+
     }
     public List<String> binaryTreePaths(TreeNode root) {
-        String path="";
-        List<String> ans=new ArrayList<>();
-        solution(root,ans,path);
+
+        List<String> ans= new ArrayList<>();
+        StringBuilder str = new StringBuilder();
+        solution(root,ans,"");
         return ans;
         
     }
