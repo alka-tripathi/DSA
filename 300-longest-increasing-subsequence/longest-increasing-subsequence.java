@@ -1,28 +1,32 @@
 class Solution {
-    public static int solution(int prevI,int i,int arr[],int dp[][]){
-        if(i>=arr.length)return 0;
-
-        if(dp[i][prevI+1]!=-1)return dp[i][prevI+1];
-
-        int nt=solution(prevI,i+1,arr,dp);
-        int take=0;
-        if(prevI==-1 || arr[prevI]<arr[i]){
-            take=1+solution(i,i+1,arr,dp);
+    public static int lowerBound(int l,int h,int target,ArrayList<Integer> arr){
+int ans=0;
+        while(l<=h){
+            int mid=l+(h-l)/2;
+            if(arr.get(mid)>=target){
+                ans=mid;
+               h=mid-1;
+            }else{
+            l=mid+1;
+            }
         }
-        return dp[i][prevI+1]=Math.max(nt,take);
-
+        return ans;
     }
     public int lengthOfLIS(int[] nums) {
-
+        int len=1;
         int n=nums.length;
-        int dp[][]= new int[n][n+1];
-        for(int i=0;i<n;i++){
-            for(int j=0;j<=n;j++){
-                dp[i][j]=-1;
+        ArrayList<Integer>arr = new ArrayList<>();
+        arr.add(nums[0]);
+        for(int i=1;i<n;i++){
+            if(nums[i]>arr.get(arr.size()-1)){
+                arr.add(nums[i]);
+                len++;
+            }else{
+                int idx=lowerBound(0,arr.size()-1,nums[i],arr);
+                arr.set(idx,nums[i]);
             }
         }
 
-        return solution(-1,0,nums,dp);
-        
+        return len;
     }
 }
