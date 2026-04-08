@@ -14,50 +14,38 @@
  * }
  */
 class Solution {
-    public static void zigzagTraversal(TreeNode root,List<List<Integer>> ans,int flag){
-        Queue<TreeNode> q= new LinkedList<>();
+    public static void solution(TreeNode root,List<List<Integer>> res){
+        Queue<TreeNode> q = new LinkedList<>();
+        boolean lr=true;
+        if(root==null)return;
         q.add(root);
-        q.add(null);
-        List<Integer> list=new ArrayList<>();
+
         while(!q.isEmpty()){
-            TreeNode currnode=q.remove();
-            if(currnode==null){
-              if(flag==1){
-                 ans.add(new ArrayList<>(list));
-              }else{
-              Collections.reverse(list);
-                 ans.add(new ArrayList<>(list));
-              }
-               list.clear();
-               flag=1-flag;
-              
-               if(!q.isEmpty()){
-                 q.add(null);
-               }
-            }
-        else{
-             list.add(currnode.val);
-                  if(currnode.left!=null){
-                    q.add(currnode.left);
-                } 
-                if(currnode.right!=null){
-                    q.add(currnode.right);
-                }
-                
-                
-                
-            }
-            }
+            ArrayList<Integer> list = new ArrayList<>();
+            int size=q.size();
           
+            for(int i=0;i<size;i++){
+              TreeNode curr=q.poll();
+              list.add(curr.val);
+              if(curr.left!=null)q.add(curr.left);
+              if(curr.right!=null)q.add(curr.right);
+            }
+            if(lr){
+                res.add(list);
+                lr=false;
+            }else{
+                Collections.reverse(list);
+                res.add(list);
+                lr=true;
+
+            }
         }
-    
+       
+    }
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
-        int flag=1;
-           List<List<Integer>> ans=new ArrayList<>();
-        if(root==null) return  ans;
-    
-       zigzagTraversal(root,ans,flag);
-       return ans;
+        List<List<Integer>> res=new ArrayList<>();
+        solution(root,res);
+        return res;
         
     }
 }
