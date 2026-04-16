@@ -1,41 +1,35 @@
 class Solution {
     public List<Integer> largestDivisibleSubset(int[] nums) {
+       Arrays.sort(nums);
         int n=nums.length;
-        int prev_idx[]= new int[n];
-        int count[]= new int[n];
+        int dp[]= new int[n];
+        Arrays.fill(dp,1);
+        int prevIdx[]= new int[n];
+        Arrays.fill(prevIdx,-1);
 
-        Arrays.sort(nums);
-          Arrays.fill(count, 1);
-
-            for (int i = 0; i < n; i++) {
-            prev_idx[i] = i;     
-        }
-    
-    int lastIndx=0;
-    int maxlen=1;
-
+        int lastIdx=-1;
+        int maxi=Integer.MIN_VALUE;
         for(int i=0;i<n;i++){
-
-            for(int prev=0;prev<i;prev++){
-              if(nums[i]%nums[prev]==0 && count[i]<count[prev]+1){
-                count[i]=count[prev]+1;
-                prev_idx[i]=prev;
-              }
+            for(int j=0;j<i;j++){
+                if(nums[i]%nums[j]==0 && dp[i]<dp[j]+1){
+                    dp[i]=dp[j]+1;
+                    prevIdx[i]=j;
+                }
             }
-            if(count[i]>maxlen){
-                maxlen=count[i];
-                lastIndx=i;
+            if(maxi<dp[i]){
+                maxi=Math.max(maxi,dp[i]);
+                lastIdx=i;
             }
         }
+
         ArrayList<Integer> ans = new ArrayList<>();
-        while(prev_idx[lastIndx]!=lastIndx){
-            ans.add(nums[lastIndx]);
-            lastIndx=prev_idx[lastIndx];
+        while(lastIdx!=-1){
+            ans.add(nums[lastIdx]);
+            lastIdx=prevIdx[lastIdx];
         }
-
-       ans.add(nums[lastIndx]); 
         Collections.reverse(ans);
         return ans;
+        
         
     }
 }
