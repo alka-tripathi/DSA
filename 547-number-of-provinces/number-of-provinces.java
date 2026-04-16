@@ -1,55 +1,39 @@
 class Solution {
-    public static class Edge{
-        int src;
-        int dest;
-        int wt;
-        public Edge(int src,int dest,int wt){
-            this.src=src;
-            this.dest=dest;
-            this.wt=wt;
-        }
-    }
-    public static void createGraph(ArrayList<Edge> graph[],int[][] arr){
-        for(int i=0;i<arr.length;i++){
-            graph[i]=new ArrayList<>();
-        }
-        for(int i=0;i<arr.length;i++){
-            for(int j=0;j<arr[i].length;j++){
-                if(arr[i][j]==1 ){
-                    graph[i].add(new Edge(i,j,1));
-                }
-            }
-        }
-    }
-    //dfs
-    public static void dfs(boolean visited[],int src,ArrayList<Edge> graph[]){
-        visited[src]=true;
-        for(int i=0;i<graph[src].size();i++){
-            Edge e= graph[src].get(i);
-            if(!visited[e.dest]){
-              
-                dfs(visited,e.dest,graph);
-            }
-        }
-    }
-    public static int countDisconnectedGraph(ArrayList<Edge> graph[]){
-        int count=0;
-        int n=graph.length;
-        boolean visited[] = new boolean[n];
-        for(int i=0;i<graph.length;i++){
-            if(!visited[i]){
-                count++;
-           dfs(visited,i,graph);
-            }
+    public static void dfs(int curr, ArrayList<ArrayList<Integer>> adj,boolean visited[]){
+        visited[curr]=true;
 
+      ArrayList<Integer> list = adj.get(curr);
+      for(int i=0;i<list.size();i++){
+        int nb=list.get(i);
+        if(!visited[nb]){
+            dfs(nb,adj,visited);
         }
-        return count;
+      }
     }
     public int findCircleNum(int[][] isConnected) {
-        int v=isConnected.length;
-        ArrayList<Edge> graph[]=new ArrayList[v];
-        createGraph(graph,isConnected);
-     return  countDisconnectedGraph(graph);
+        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
+        int n=isConnected.length;
+        int m=isConnected[0].length;
+
+        for(int i=0;i<n;i++){
+            ArrayList<Integer> list = new ArrayList<>();
+            for(int j=0;j<m;j++){
+                if(isConnected[i][j]==1){
+                    list.add(j);
+                }
+
+            }
+            adj.add(list);
+        }
+        int count=0;
+        boolean visited[]= new boolean[n];
+        for(int i=0;i<n;i++){
+            if(!visited[i]){
+                dfs(i,adj,visited);
+                count++;
+            }
+        }
+        return count;
         
     }
 }
