@@ -1,48 +1,32 @@
 class Solution {
-    public static int answer;
+    public  int result=Integer.MAX_VALUE;
+    public  void solve(int idx,int cookies[],int children[],int k){
 
-    public static void solution(int idx, int[] cookies, int[] children, int k) {
-
-        if (idx == cookies.length) {
-            int maxvalue = Integer.MIN_VALUE;
-            for (int i = 0; i < k; i++) {
-                maxvalue = Math.max(maxvalue, children[i]);
+        if(idx>=cookies.length){
+            int maxCookie=0;
+            for(int i=0;i<k;i++){
+                maxCookie=Math.max(maxCookie,children[i]);
             }
-            answer = Math.min(answer, maxvalue);
+            result=Math.min(result,maxCookie);
             return;
+
         }
 
-        // assign cookies[idx] to each child
-        for (int j = 0; j < k; j++) {
-            children[j] += cookies[idx];
 
-           
-                solution(idx + 1, cookies, children, k);
-            
-
-            children[j] -= cookies[idx];
+        int cookie=cookies[idx];
+        for(int i=0;i<k;i++){
+            children[i]+=cookies[idx];
+            solve(idx+1,cookies,children,k);
+            children[i]-=cookies[idx];
 
         }
     }
-
     public int distributeCookies(int[] cookies, int k) {
-        answer = Integer.MAX_VALUE;
 
-        // optimization
-        Arrays.sort(cookies);
-        reverse(cookies);
+        int children[]= new int[k];
+        solve(0,cookies,children,k);
 
-        int[] children = new int[k];
-        solution(0, cookies, children, k);
-        return answer;
-    }
-
-    private static void reverse(int[] arr) {
-        int l = 0, r = arr.length - 1;
-        while (l < r) {
-            int temp = arr[l];
-            arr[l++] = arr[r];
-            arr[r--] = temp;
-        }
+        return result;
+        
     }
 }
