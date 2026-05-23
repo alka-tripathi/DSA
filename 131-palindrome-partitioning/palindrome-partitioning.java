@@ -1,28 +1,37 @@
 class Solution {
-    public static boolean isPalindrom(String s,int i,int j){
-       StringBuilder str=new StringBuilder(s.substring(i,j+1));
-       //str.reverse();
-       return s.substring(i,j+1).equals(str.reverse().toString());
+   public static boolean isPalindrom(String str){
+        char arr[]= str.toCharArray();
+        int l=0;
+        int n=str.length();
+        int r=n-1;
+        while(l<=r){
+            if(arr[l] != arr[r])return false;
+            l++;
+            r--;
+        }
+        return true;
     }
-    public static void backtrack(String s,int idx,List<String> list,List<List<String>> result){
-if(idx==s.length()){
-    result.add(new ArrayList<>(list));
-    return;
-}
+    public static void solution(int i,String s,List<String> list,List<List<String>> res){
+        if(i==s.length()){
+            res.add(new ArrayList<>(list));
+            return;
 
- for(int i=idx;i<s.length();i++){
-    if(isPalindrom(s,idx,i)){
-        System.out.print(s.substring(idx,i+1)+" ");
-        list.add(s.substring(idx,i+1));
-        backtrack(s,i+1,list,result);
-        list.remove(list.size()-1);
-    }
- }
+        }
+
+        for(int l=i+1;l<=s.length();l++){
+            String temp=s.substring(i,l);
+            if(isPalindrom(temp)){
+                list.add(temp);
+                solution(l,s,list,res);
+                list.remove(list.size()-1);
+            }
+        }
     }
     public List<List<String>> partition(String s) {
-        List<List<String>> result=new ArrayList<>();
-        List<String> list=new ArrayList<>();
-        backtrack(s,0,list,result);
-        return result;
+        List<String> list = new ArrayList<>();
+        List<List<String>> res= new ArrayList<>();
+        solution(0,s,list,res);
+        return res;
+        
     }
 }
