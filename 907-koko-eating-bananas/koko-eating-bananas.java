@@ -1,32 +1,32 @@
 class Solution {
-    public static boolean isPossible(int arr[],int mid,int h){
-        int hours=0;
+    public static boolean isPossible(int mid,int arr[],int h){
+        long hours=0;
         for(int i=0;i<arr.length;i++){
-            
-            hours+=(arr[i]+mid-1)/mid;
-            if(hours>h) return false;
+            hours+=(long)Math.ceil((double)arr[i]/mid);
         }
-        return hours<=h;
+       if(hours<=h)return true;
+       return false;
     }
-    public static int maxVal(int arr[]){
-        int maxval=Integer.MIN_VALUE;
+    public static int maxE(int arr[]){
+        int ans=Integer.MIN_VALUE;
         for(int i=0;i<arr.length;i++){
-            maxval=Math.max(arr[i],maxval);
+            ans=Math.max(ans,arr[i]);
         }
-        return maxval;
+        return ans;
     }
     public int minEatingSpeed(int[] piles, int h) {
         int l=1;
-        int ans=-1;
-        int r=maxVal(piles);
+        int r=maxE(piles);
+        int ans=0;
         while(l<=r){
             int mid=l+(r-l)/2;
-            if(isPossible(piles,mid,h)){
+            if(isPossible(mid,piles,h)){
                 ans=mid;
-            r=mid-1;
+                r=mid-1;
             }else{
-                l=mid+1;
+            l=mid+1;
             }
+
         }
         return ans;
         
