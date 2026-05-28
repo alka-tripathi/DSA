@@ -1,36 +1,37 @@
 class Solution {
-    public static boolean isPossible(int arr[],int days,int capacity){
-        int d=1;
+    public static boolean isPossible(int wt,int arr[],int days){
         int sum=0;
-       
+        int d=1;
+
         for(int i=0;i<arr.length;i++){
-            if(arr[i]>capacity) return false;
-
-            if(arr[i]+sum <= capacity){
-                sum+=arr[i];
-            }else{
-                sum=arr[i];
-                d++;
-
-            }
-         
+         if(arr[i]>wt)return false;
+          if(sum+arr[i]>wt){
+            d++;
+            sum=arr[i];
+           // break;
+          }else{
+            sum+=arr[i];
+          }
+        
+           
         }
-        return d<=days;
+         if(d<=days)return true;
+         return false;
     }
 
     public int shipWithinDays(int[] weights, int days) {
-      
-        int ans=-1;
+
+        int n=weights.length;
         int sum=0;
-        int l=0;
-        for(int i=0;i<weights.length;i++){
-            l=Math.min(l,weights[i]);
+        for(int i=0;i<n;i++){
             sum+=weights[i];
         }
+        int l=0;
         int h=sum;
+        int ans=-1;
         while(l<=h){
             int mid=l+(h-l)/2;
-            if(isPossible(weights,days,mid)){
+            if(isPossible(mid,weights,days)){
                 ans=mid;
                 h=mid-1;
             }else{
@@ -38,5 +39,8 @@ class Solution {
             }
         }
         return ans;
+        
+
     }
+
 }
