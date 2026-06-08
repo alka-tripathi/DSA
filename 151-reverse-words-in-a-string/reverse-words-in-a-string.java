@@ -1,29 +1,28 @@
 class Solution {
     public String reverseWords(String s) {
-        s=s.trim();
-        StringBuilder sb = new StringBuilder(s);
-        String ans="";
-        sb.reverse();
+
         StringBuilder word=new StringBuilder();
-        int n=sb.length();
-        int r=0;
-        while(r<n){
-            char ch=sb.charAt(r);
-           if(ch!=' '){
-            word.append(ch);
-           }else if(word.length()>0){
-            ans+=word.reverse().toString()+" ";
-           
-            word.setLength(0);
+        int n=s.length();
+        String ans="";
+        for(int i=n-1;i>=0;i--){
+            char ch=s.charAt(i);
+            if(ch==' '){
+              if(word.length()>0){
+                  word.reverse();
+                ans+=word+" ";
+                word=new StringBuilder();
+              }
 
-           }
-            r++;
+            }else{
+                word.append(ch);
+            }
         }
-    if(word.length()>0){
-        ans+=word.reverse().toString();
-    }
-
-
-        return ans.trim();
+        if(word.length()>0){
+            word.reverse();
+        ans+=word;
+      
+        }
+          return ans.trim();
+        
     }
 }
