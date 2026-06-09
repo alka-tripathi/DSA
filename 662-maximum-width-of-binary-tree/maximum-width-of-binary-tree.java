@@ -14,46 +14,49 @@
  * }
  */
 class Solution {
-    public static class Pair{
+    public static class pair{
         TreeNode node;
-        int idx;
-        public Pair(TreeNode node,int idx){
+        int index;
+        public pair(TreeNode node,int index){
             this.node=node;
-            this.idx=idx;
+            this.index=index;
         }
-    }
-    public static int solution(TreeNode root){
-         if (root == null) return 0;
-     Deque<Pair> dq = new ArrayDeque<>();
-        int maxwidth=0;
-        dq.add(new Pair(root,0));   //parent node and its index;
-        while(!dq.isEmpty()){
-            int currsize=dq.size();
-
-            int start=dq.peekFirst().idx;
-            int last=dq.peekLast().idx;
-            maxwidth=Math.max(maxwidth,last-start+1);
-            for(int i=0;i<currsize;i++){
-              
-             Pair curr = dq.removeFirst();
-               TreeNode currnode = curr.node;
-                int idx = curr.idx;
-                if(currnode.left!=null){
-                    dq.addLast(new Pair(currnode.left,2*idx+1));
-                }
-                 if(currnode.right !=null){
-                    dq.addLast(new Pair(currnode.right,2*idx+2));
-                }
-            }
-
-            
-        }
-        return maxwidth;
-
     }
     public int widthOfBinaryTree(TreeNode root) {
-        //we can do it with CBT index bases
-        return solution(root);
+
+        Deque<pair> dq= new ArrayDeque<>();
+        int maxans=0;
+
+        dq.addLast(new pair(root,0));
+
+        while(!dq.isEmpty()){
+           int size = dq.size();
+
+            int fi = dq.peekFirst().index;
+            int li = dq.peekLast().index;
+             maxans = Math.max(maxans, li - fi + 1);
+           
+
+            for(int i=0;i<size;i++){
+
+               pair curr=dq.removeFirst();
+             int idx=curr.index;
+
+
+                if(curr.node.left != null){
+                    pair newp=new pair(curr.node.left,2*idx+1);
+                  dq.addLast(newp);
+                }
+                if(curr.node.right!=null){
+                 pair newp1=new pair(curr.node.right,2*idx+2);
+                  dq.addLast(newp1);
+                }
+
+            }
+
+        }
+        return maxans;
+
         
     }
 }
