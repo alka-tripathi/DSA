@@ -14,22 +14,20 @@
  * }
  */
 class Solution {
+    public static boolean solution(TreeNode p,TreeNode q){
+          if(p==null && q==null)return true;
+        if(p==null || q==null)return false;
+      
+
+        if(p.val!=q.val)return false;
+        boolean ls=solution(p.left,q.left);
+        boolean rs=solution(p.right,q.right);
+
+return ls && rs;
+    }
     public boolean isSameTree(TreeNode p, TreeNode q) {
-        if(p==null && q==null){
-            return true;
-        }
-        if(p==null || q==null){
-            return false;
-        }
-        if(p.val!=q.val){
-            return false;
-        }
-        boolean leftside=isSameTree(p.left,q.left);
-        boolean rightside = isSameTree(p.right,q.right);
 
-        return leftside && rightside;
-
-
+        return solution(p,q);
         
     }
 }
