@@ -14,28 +14,31 @@
  * }
  */
 class Solution {
-    public static int idx=0;
-    public static void inorder(TreeNode root,ArrayList<Integer> arr){
-        if(root==null)return ;
-          inorder(root.left,arr);
-          arr.add(root.val);
-          inorder(root.right,arr);
+     TreeNode prev = null;
+    TreeNode first = null;
+    TreeNode sec = null;
 
-    }
-    public static void test(TreeNode root,ArrayList<Integer> arr){
+    public void solution(TreeNode root){
         if(root==null)return ;
-        test(root.left,arr);
-        //set karo val of arr to tree
-        root.val=arr.get(idx++);
-        test(root.right,arr);
+       solution(root.left);
+       if(prev!=null && root.val <prev.val){
+        if(first==null){
+            first=prev;
+        }
+        sec=root;
+       }
+       prev=root;
 
+       solution(root.right);
     }
     public void recoverTree(TreeNode root) {
-        ArrayList<Integer> list = new ArrayList<>();
-        inorder(root,list);
-        Collections.sort(list);
-idx=0;
-        test(root,list);
+        
+
+        solution(root);
+        //swap the val
+        int temp=first.val;
+        first.val=sec.val;
+        sec.val=temp;
         
     }
 }
