@@ -1,16 +1,15 @@
 class StockSpanner {
-   
-    public class pair{
-        int val;
-        int span;
-
-        public pair(int val,int span){
-            this.val=val;
-            this.span=span;
-        }
+ static class Pair{
+    int val;
+    int span;
+    public Pair(int val,int span){
+        this.val=val;
+        this.span=span;
     }
-     Stack<pair> s ;
+}
 
+    
+Stack<Pair> s ;
     public StockSpanner() {
         s=new Stack<>();
         
@@ -18,11 +17,11 @@ class StockSpanner {
     
     public int next(int price) {
         int span=1;
-        while(!s.isEmpty() && s.peek().val <= price ){
-            span+=s.peek().span;
+        while(!s.isEmpty() && s.peek().val<=price){
+           span+=s.peek().span;
             s.pop();
         }
-        s.push(new pair(price,span));
+        s.push(new Pair(price,span));
         return span;
         
     }
