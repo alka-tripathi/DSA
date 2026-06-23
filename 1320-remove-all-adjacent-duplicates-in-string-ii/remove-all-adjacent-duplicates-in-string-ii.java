@@ -1,34 +1,38 @@
 class Solution {
-    static class Pair{
-        char ch;
+    public static class Pair{
+        char val;
         int count;
 
-        Pair(char ch,int count){
-            this.ch=ch;
+        public Pair(char val,int count){
+            this.val=val;
             this.count=count;
         }
-        
     }
     public String removeDuplicates(String s, int k) {
-        Stack<Pair> st = new Stack<>();
+
+        Stack<Pair> stack = new Stack<>();
+
         for(int i=0;i<s.length();i++){
-            char c=s.charAt(i);
-            if(!st.isEmpty() && st.peek().ch==c){
-                st.peek().count++;
+            char ch=s.charAt(i);
+            if(!stack.isEmpty() && stack.peek().val==ch){
+               stack.peek().count++;
+               if(stack.peek().count==k){
+                stack.pop();
+               }
             }else{
-                st.push(new Pair(c,1));
+                stack.push(new Pair(ch,1));
             }
-              if(st.peek().count==k){
-            st.pop();
+          
         }
+        StringBuilder ans = new StringBuilder();
+        while(!stack.isEmpty()){
+            Pair p=stack.pop();
+           
+            for(int i=1;i<=p.count;i++){
+                ans.append(p.val);
+            }
         }
-      StringBuilder sb = new StringBuilder();
-      for(Pair p:st){
-        for(int i=0;i<p.count;i++){
-            sb.append(p.ch);
-        }
-      }
-      return sb.toString();
+        return ans.reverse().toString();
         
     }
 }
