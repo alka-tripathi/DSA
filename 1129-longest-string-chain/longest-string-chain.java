@@ -1,41 +1,39 @@
 class Solution {
-    public static boolean isPredecessor(String str1,String str2){
-        int n=str1.length();
-        int m=str2.length();
-         int f=0;
-            int s=0;
-        if(n-m==1){
-           
-            while(f<n){
-                if(s<m && str1.charAt(f)==str2.charAt(s)){
-                    f++;
-                    s++;
-                }else{
-                    f++;
-                }
+    public static boolean isPredecessor(int i,int j,String s1,String s2){
+        if(s1.length()-s2.length()!=1)return false;
+
+          if (j == s2.length())
+        return true;
+        if(i==s1.length())return false;
+
+       
+            if(s1.charAt(i)==s2.charAt(j)){
+return isPredecessor(i+1,j+1,s1,s2);
             }
-        }
-        if(f==n && s==m)return true;
-        return false;
+            return isPredecessor(i+1,j,s1,s2);
+        
     }
     public int longestStrChain(String[] words) {
         int n=words.length;
-        //sort array with len
+        int dp[]=new int[n];
+        Arrays.fill(dp, 1);
         Arrays.sort(words,(a,b)->a.length()-b.length());
-        int dp[]= new int[n];
-        Arrays.fill(dp,1);
-        int maxi=Integer.MIN_VALUE;
+        int len=0;
         for(int i=0;i<n;i++){
             for(int j=0;j<i;j++){
-                if(isPredecessor(words[i],words[j]) && dp[j]+1>dp[i]){
+            int diff=words[i].length()-words[j].length();
+            if(diff==1 && isPredecessor(0,0,words[i],words[j])){
+                if(dp[i]<dp[j]+1){
                     dp[i]=dp[j]+1;
                 }
             }
-              if(dp[i]>maxi){
-            maxi=Math.max(dp[i],maxi);
+        
+
+            }
+                len=Math.max(len,dp[i]);
+                
         }
-        }
-      
-        return maxi;
+        return len;
+        
     }
 }
