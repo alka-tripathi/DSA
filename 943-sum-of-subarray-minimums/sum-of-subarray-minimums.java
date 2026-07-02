@@ -1,55 +1,63 @@
 class Solution {
-    //next smaller to left
-    public static ArrayList<Integer> nsl(int arr[]){
-        ArrayList<Integer> ans = new ArrayList<>();
-        Stack<Integer> st = new Stack<>();
-        for(int i=0;i<arr.length;i++){
-            while(!st.isEmpty() && arr[st.peek()]>arr[i]){
-                st.pop();
-            }
-            if(st.isEmpty()){
-                ans.add(-1);
-            }else{
-                ans.add(st.peek());
-            }
-            st.push(i);
-            
+    public static int[] nse(int arr[]){
+        Stack<Integer> s = new Stack<>();
+      int n=arr.length;
+        int ans[]= new int[n];
 
+        for(int i=n-1;i>=0;i--){
+            if(s.isEmpty()){
+                ans[i]=n;
+            }else{
+                while(!s.isEmpty() && arr[s.peek()]>arr[i]){
+                    s.pop();
+                }
+                if(s.isEmpty()){
+                    ans[i]=n;
+                }else{
+                    ans[i]=s.peek();
+                }
+            }
+            s.push(i);
         }
         return ans;
     }
 
-    //next smallest to right
-    public static ArrayList<Integer> nsr(int arr[]){
-        ArrayList<Integer> ans = new ArrayList<>();
-        int n=arr.length;
-        Stack<Integer> st = new Stack<>();
-        for(int i=arr.length-1;i>=0;i--){
-            while(!st.isEmpty()  && arr[st.peek()]>=arr[i]){
-                st.pop();
-            }
+     public static int[] pse(int arr[]){
+        Stack<Integer> s = new Stack<>();
+         int n=arr.length;
+        int ans[]= new int[n];
 
-            if(st.isEmpty()){
-                ans.add(n);
+        for(int i=0;i<n;i++){
+            if(s.isEmpty()){
+                ans[i]=-1;
             }else{
-            ans.add(st.peek());
+                while(!s.isEmpty() && arr[s.peek()]>=arr[i]){
+                    s.pop();
+                }
+                if(s.isEmpty()){
+                    ans[i]=-1;
+                }else{
+                    ans[i]=s.peek();
+                }
             }
-            st.push(i);
-
+            s.push(i);
         }
-    Collections.reverse(ans);
-    return ans;
+        return ans;
     }
+    
     public int sumSubarrayMins(int[] arr) {
-        ArrayList<Integer> nsl=nsl(arr);
-        ArrayList<Integer> nsr=nsr(arr);
-        long mod=1_000_000_007;
+
+        int n=arr.length;
+        int nse[]=nse(arr);
+        int pse[]=pse(arr);
         long ans=0;
-        for(int i=0;i<arr.length;i++){
-            int l=i-nsl.get(i);
-            int r=nsr.get(i)-i;
-            long total=l*r;
-            ans=(ans+(total%mod*arr[i]))%mod;
+         int mod=1000000007;
+        for(int i=0;i<n;i++){
+            int right=nse[i]-i;
+            int left=i-pse[i];
+           long t = ((long)arr[i] * left * right) % mod;
+           ans = (ans + t) % mod;
+            
         }
         return (int)ans;
     }
