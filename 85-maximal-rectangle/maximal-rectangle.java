@@ -1,82 +1,88 @@
 class Solution {
-
-    //nse
-    public static ArrayList<Integer> nse(int arr[]){
-
+    public static int[] nse(int arr[]){
         Stack<Integer> s = new Stack<>();
-        ArrayList<Integer> ans = new ArrayList<>();
         int n=arr.length;
+        
+        int ans[]= new int[n];
         for(int i=n-1;i>=0;i--){
-            while(!s.isEmpty() && arr[s.peek()]>=arr[i]){
-                s.pop();
-            }
             if(s.isEmpty()){
-               ans.add(n); 
+                ans[i]=n;
             }else{
-                ans.add(s.peek());
+                while(!s.isEmpty() && arr[s.peek()]>=arr[i]){
+                    s.pop();
+                }
+                if(s.isEmpty()){
+                    ans[i]=n;
+                }else{
+                    ans[i]=s.peek();
+                }
             }
             s.push(i);
         }
-        Collections.reverse(ans);
         return ans;
+
+
     }
 
-
-
-
-      public static ArrayList<Integer> pse(int arr[]){
-
+     public static int[] pse(int arr[]){
         Stack<Integer> s = new Stack<>();
-        ArrayList<Integer> ans = new ArrayList<>();
         int n=arr.length;
+        
+        int ans[]= new int[n];
         for(int i=0;i<n;i++){
-            while(!s.isEmpty() && arr[s.peek()]>=arr[i]){
-                s.pop();
-            }
             if(s.isEmpty()){
-               ans.add(-1); 
+                ans[i]=-1;
             }else{
-                ans.add(s.peek());
+                while(!s.isEmpty() && arr[s.peek()]>arr[i]){
+                    s.pop();
+                }
+                if(s.isEmpty()){
+                    ans[i]=-1;
+                }else{
+                    ans[i]=s.peek();
+                }
             }
             s.push(i);
         }
         return ans;
-    }
 
+
+    }
     public static int largestArea(int arr[]){
-        ArrayList<Integer> nse1=nse(arr);
-        ArrayList<Integer> pse1=pse(arr);
-        int maxArea=0;
+        int n=arr.length;
+        int nse[]=nse(arr);
+        int pse[]=pse(arr);
+        int maxans=Integer.MIN_VALUE;
         for(int i=0;i<arr.length;i++){
-            int w=(nse1.get(i)-pse1.get(i))-1;
-
-            maxArea=Math.max(maxArea,w*arr[i]);
+            int w=nse[i]-pse[i]-1;
+            maxans=Math.max(maxans,w*arr[i]);
         }
-        return maxArea;
+        return maxans;
     }
 
+    
     public int maximalRectangle(char[][] matrix) {
 
         int n=matrix.length;
-    int maxA =Integer.MIN_VALUE;
-    int m=matrix[0].length;
-      int[] heights = new int[m];
-        int maxArea = 0;
-  
-      for(int i=0;i<n;i++){
-        for(int j=0;j<m;j++){
-            if(matrix[i][j] =='1') {
-                  heights[j] += 1;
+        int m=matrix[0].length;
+        
+        int h[]= new int[m];
+        int maxans=Integer.MIN_VALUE;
 
-            }else{
-heights[j] = 0;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(matrix[i][j]=='1'){
+                    h[j]=h[j]+1;
+                }else{
+                    h[j]=0;
+                }
             }
-          
-          
+          maxans=Math.max(maxans,largestArea(h));
+
         }
-           maxArea = Math.max(maxArea, largestArea(heights));
-      }
-    return maxArea;
+        
+        return maxans;
+
         
     }
 }
