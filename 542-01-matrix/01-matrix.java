@@ -1,52 +1,54 @@
 class Solution {
-    public static int[][] direction={{1,0},{-1,0},{0,1},{0,-1}};
+    public int[][] direction={{0,1},{0,-1},{1,0},{-1,0}};
     public static class Pair{
         int i;
         int j;
-        int step;
-        public Pair(int i,int j,int step){
+        int dist;
+        public Pair(int i,int j,int dist){
             this.i=i;
             this.j=j;
-            this.step=step;
+            this.dist=dist;
         }
     }
-    public static void bfs(int[][] grid,int ans[][],boolean[][] visited){
-         Queue<Pair> q = new LinkedList<>();
-        for(int i=0;i<grid.length;i++){
-            for(int j=0;j<grid[0].length;j++){
-                if(grid[i][j]==0){
+    public int[][] updateMatrix(int[][] mat) {
+        
+        Queue<Pair> q = new LinkedList<>();
+       
+        int n=mat.length;
+        int m=mat[0].length;
+         int ans[][]= new int[n][m];
+        boolean vis[][]= new boolean[n][m];
+
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(mat[i][j]==0){
                     q.add(new Pair(i,j,0));
-                     visited[i][j] = true;
+                vis[i][j]=true;
                 }
             }
         }
 
-          while(!q.isEmpty()){
-                Pair p = q.remove();
-                int i1=p.i;
-                int j1=p.j;
-                int s=p.step;
-              
-                ans[i1][j1]=s;
-
-                for(int k=0;k<4;k++){
-                    int new_i=direction[k][0]+i1;
-                    int new_j=direction[k][1]+j1;
-                    if(new_i>=0 && new_i<grid.length && new_j>=0 && new_j<grid[0].length && !visited[new_i][new_j]){
-                        q.add(new Pair(new_i,new_j,s+1));
-                          visited[new_i][new_j]=true;
-                    }
+        while(!q.isEmpty()){
+            int i=q.peek().i;
+            int j=q.peek().j;
+            int d=q.poll().dist;
+            ans[i][j]=d;
+            for(int k=0;k<4;k++){
+                int new_i=direction[k][0]+i;
+                int new_j=direction[k][1]+j;
+                if(new_i>=0 && new_j>=0 && new_i<n && new_j<m && !vis[new_i][new_j]){
+                    
+                    q.add(new Pair(new_i,new_j,d+1));
+                    vis[new_i][new_j]=true;
                 }
-            
+
+            }
+
+
         }
-    }
-    public int[][] updateMatrix(int[][] mat) {
-         int n=mat.length;
-        int m=mat[0].length;
-        boolean visited[][]=new boolean[n][m];
-        int[][] ans=new int[n][m];
-        bfs(mat,ans,visited);
         return ans;
-        
+
+
+
     }
 }
